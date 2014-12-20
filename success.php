@@ -47,7 +47,7 @@ function extractTags($result) {
 	<form action="tagnet.php" method="get">
 		<input type="hidden" name="code" value="<?php echo $_GET["code"]; ?>" />
 		Tag: <input type="text" name="tag" /><br />
-		Interations: <input type="text" name="iterations" max="100" /> (max. 100)<br />
+		Interations: <input type="text" name="iterations" max="100" /> (max. 100, one iteration gets 20 items)<br />
 		<input type="submit" />
 	</form>
 	
