@@ -8,9 +8,9 @@ use MetzWeb\Instagram\Instagram;
 
 // initialize class
 $instagram = new Instagram(array(
-  'apiKey'      => '6815a8983545492e9cda7a318feadda0',
-  'apiSecret'   => '915678fec1fa4e228272a83de9ff63eb',
-  'apiCallback' => 'http://labs.polsys.net/tools/instagram/tagnet/success.php' // must point to success.php
+  'apiKey'      => $apiKey,
+  'apiSecret'   => $apiSecret,
+  'apiCallback' => $apiCallback
 ));
 
 // receive OAuth code parameter
