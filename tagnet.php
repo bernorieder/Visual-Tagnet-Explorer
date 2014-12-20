@@ -1,5 +1,7 @@
 <?php
 
+ini_set('memory_limit','128M');
+
 require "conf.php";
 require "php-api/src/Instagram.php";
 use MetzWeb\Instagram\Instagram;
@@ -25,14 +27,19 @@ if (isset($code)) {
 	$instagram->setAccessToken($data);
 
 	$taglist = array();
+	$ids = array();
+	$stats = array();
+	$stats["counter"] = 0;
+	$stats["oldest"] = 10000000000000000;
+	$stats["newest"] = 0;
 
-	$query = trim($_GET["tag"]);
+	$query = preg_replace("/#/","",trim($_GET["tag"]));
 	$iterations= trim($_GET["iterations"]);
 
 	$result = $instagram->getTagMedia($query, 20);
 	extractTags($result);
 
-	for($i = 0; $i < $iterations; $i++) {
+	for($i = 0; $i < $iterations-1; $i++) {
 		$result = $instagram->pagination($result);
 		extractTags($result);
 	}
@@ -48,10 +55,21 @@ if (isset($code)) {
 
 function extractTags($result) {
 
-	global $taglist;
+	global $taglist,$ids,$stats;
 
 	foreach ($result->data as $media) {
+
+		if(!isset($ids[$media->id])) {
+			$ids[$media->id] = true;
+		} else {
+			echo "already in bucket";
+		}
+
 		$taglist[] = $media->tags;
+		
+		$stats["counter"]++;
+		if($media->created_time > $stats["newest"]) {  $stats["newest"] = $media->created_time; }
+		if($media->created_time < $stats["oldest"]) {  $stats["oldest"] = $media->created_time; }
 	}
 
 }
@@ -63,6 +81,17 @@ function extractTags($result) {
 	
 <head>
 	<title>Instagram Tagnet</title>
+	
+	<style type="text/css">
+		
+		html,body {
+			font-family: Arial,Helvetica,sans-serif;
+		}
+		
+	</style>
+	
+	<h1>Instagram Tagnet</h1>
+	
 </head>
 
 <?php
@@ -122,7 +151,14 @@ $filename = "instagram_" . $query . "_" . $iterations . "_" .date("Y_m_d-H_i_s")
 
 file_put_contents($filename, $gdf);
 
-echo '<br /><br />your file: <a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'">'.$filename.'</a>';
+
+
+echo 'The script has extracted tags from ' . $stats["counter"] . ' media items that were posted between '.date("Y-m-d H:i:s",$stats["oldest"]).' and '.date("Y-m-d H:i:s",$stats["newest"]).'.<br /><br />
+
+
+your file: <a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'">'.$filename.'</a><br /><br />
+
+NB: Instagram also retrieves media items that one were, but not longer are tagged with the requested term. The date range indicates when media items were posted, but Instagram retrieves media items ordered according to when they were tagged.';
 
 ?>
 
