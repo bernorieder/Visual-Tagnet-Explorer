@@ -1,5 +1,6 @@
 <?php
 
+ini_set( 'default_charset', 'UTF-8' );
 ini_set('memory_limit','128M');
 
 require "conf.php";
@@ -33,10 +34,10 @@ if (isset($code)) {
 	$stats["oldest"] = 10000000000000000;
 	$stats["newest"] = 0;
 
-	$query = preg_replace("/#/","",trim($_GET["tag"]));
+	$query = urlencode(preg_replace("/#/","",trim($_GET["tag"])));
 	$iterations= trim($_GET["iterations"]);
 
-	$result = $instagram->getTagMedia($query, 20);
+	$result = $instagram->getTagMedia($query, 20);		
 	extractTags($result);
 
 	for($i = 0; $i < $iterations-1; $i++) {
@@ -76,10 +77,12 @@ function extractTags($result) {
 
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	
+<!doctype html>
+
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+
 	<title>Instagram Tagnet</title>
 	
 	<style type="text/css">
@@ -147,7 +150,7 @@ foreach($edges as $key => $value) {
 	$gdf .= md5($tmpedge[0]) . "," . md5($tmpedge[1]) . "," . $value . "\n";
 }
 
-$filename = "instagram_" . $query . "_" . $iterations . "_" .date("Y_m_d-H_i_s") . ".gdf";
+$filename = "instagram_" . md5($query) . "_" . $iterations . "_" .date("Y_m_d-H_i_s") . ".gdf";
 
 file_put_contents($filename, $gdf);
 

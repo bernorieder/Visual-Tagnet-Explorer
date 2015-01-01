@@ -1,5 +1,7 @@
 <?php
 
+ini_set( 'default_charset', 'UTF-8' );
+
 require "conf.php";
 require "php-api/src/Instagram.php";
 use MetzWeb\Instagram\Instagram;
@@ -16,10 +18,12 @@ $loginUrl = $instagram->getLoginUrl();
 
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	
+<!doctype html>
+
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+	
 	<title>Instagram Tagnet</title>
 	
 	<style type="text/css">
