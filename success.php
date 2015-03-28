@@ -36,6 +36,11 @@ function extractTags($result) {
 		
 		html,body {
 			font-family: Arial,Helvetica,sans-serif;
+			font-size: 12px;
+		}
+		
+		td {
+			padding: 5px;
 		}
 		
 	</style>
@@ -48,12 +53,29 @@ function extractTags($result) {
 
 	<p>You are now connected to Instagram. Specify a tag and the number of media to retrieve:</p>
 
-	<form action="tagnet.php" method="get">
-		<input type="hidden" name="code" value="<?php echo $_GET["code"]; ?>" />
-		Tag: <input type="text" name="tag" /><br />
-		Interations: <input type="text" name="iterations" max="100" /> (max. 100, one iteration gets 20 items)<br />
-		<input type="submit" />
-	</form>
+	<table>
+		<form action="tagnet.php" method="get">
+			<input type="hidden" name="code" value="<?php echo $_GET["code"]; ?>" />
+			<tr>
+				<td>Tag:</td>
+				<td><input type="text" name="tag" /></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Interations:</td>
+				<td><input type="text" name="iterations" max="100" /> </td>
+				<td>(max. 100, one iteration gets 20 items)</td>
+			</tr>
+			<tr>
+				<td>Get user infos:</td>
+				<td><input type="checkbox" name="getuserinfo" max="100" /></td>
+				<td>(can add a lot of time to processing)</td>
+			</tr>
+			<tr>
+				<td colspan="3"><input type="submit" /></td>
+			</tr>
+		</form>
+	<table>
 	
 	<p>NB: the public version of this script may run out of memory or into rate limitations. Source code is available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
 	
