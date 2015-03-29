@@ -13,6 +13,24 @@
 			font-size: 12px;
 		}
 		
+		table, td, th {
+		    border-color: #000;
+		    border-style: solid;
+		}
+		
+		table {
+		    border-width: 0 0 1px 1px;
+		    border-spacing: 0;
+		    border-collapse: collapse;
+		}
+		
+		td, th {
+		    margin: 0;
+		    padding: 4px;
+		    border-width: 1px 1px 0 0;
+		}
+
+
 	</style>
 	
 	<h1>Instagram Tagnet</h1>
@@ -41,6 +59,8 @@ $instagram = new Instagram(array(
 // receive OAuth code parameter
 $code = $_GET['code'];
 $getuserinfo = ($_GET["getuserinfo"] == "on") ? true:false;
+$showimages = ($_GET["showimages"] == "off") ? false:$_GET["showimages"];
+
 
 // check whether the user has granted access
 if (isset($code)) {
@@ -57,6 +77,7 @@ if (isset($code)) {
 	$ids = array();
 	$stats = array();
 	$users = array();
+	$media = array();
 	$stats["counter"] = 0;
 	$stats["oldest"] = 10000000000000000;
 	$stats["newest"] = 0;
@@ -67,7 +88,7 @@ if (isset($code)) {
 	echo "getting media, iterations:<br />";
 
 	$result = $instagram->getTagMedia($query, 20);		
-	//print_r($result);
+	//	print_r($result); exit;
 	extractTags($result);
 	
 	echo "1 ";
@@ -88,28 +109,49 @@ if (isset($code)) {
 
 function extractTags($result) {
 
-	global $taglist,$ids,$stats,$users;
+	global $taglist,$ids,$stats,$users,$media,$showimages;
 
-	foreach ($result->data as $media) {
+	foreach ($result->data as $medium) {
 
-		if(!isset($ids[$media->id])) {
-			$ids[$media->id] = true;
+		if(!isset($ids[$medium->id])) {
+			$ids[$medium->id] = true;
 		} else {
 			echo "already in bucket";
 		}
 
-		$taglist[] = $media->tags;
+		$taglist[] = $medium->tags;
 		
 		$stats["counter"]++;
-		if($media->created_time > $stats["newest"]) {  $stats["newest"] = $media->created_time; }
-		if($media->created_time < $stats["oldest"]) {  $stats["oldest"] = $media->created_time; }
+		if($medium->created_time > $stats["newest"]) {  $stats["newest"] = $medium->created_time; }
+		if($medium->created_time < $stats["oldest"]) {  $stats["oldest"] = $medium->created_time; }
 		
 		
 		// populate user lists
-		if(!isset($users[$media->user->id])) {
-			$users[$media->user->id] = array("id" => $media->user->id, "username" => $media->user->username,"count" => 0);
+		if(!isset($users[$medium->user->id])) {
+			$users[$medium->user->id] = array("id" => $medium->user->id, "username" => $medium->user->username,"count" => 0);
 		}
-		$users[$media->user->id]["count"]++;
+		$users[$medium->user->id]["count"]++;
+		
+		
+		// populate media lists
+		if(!isset($media[$medium->id])) {
+			
+			$tmp_location = (isset($medium->location->latitude)) ? $medium->location->latitude.",".$medium->location->longitude:"";
+			
+			$media[$medium->id] = array("id" => $medium->id,
+										"created_time" => date("Y-m-d H:i:s", $medium->created_time),
+										"location" => $tmp_location,
+										"no_comments" => $medium->comments->count,
+										"no_likes" => $medium->likes->count,
+										"filter" => $medium->filter,
+										"link" => $medium->link,
+										"caption" => preg_replace("/\s+/"," ",trim($medium->caption->text)),
+										"thumbnail" => $medium->images->{$showimages}->url,
+										"tags" => implode(", ", $medium->tags),
+										"user_name" => $medium->user->username,
+										"user_id" => $medium->user->id
+										);
+		}
 	}
 }
 
@@ -152,6 +194,8 @@ foreach($taglist as $tmptags) {
 
 arsort($tags);
 
+
+
 // create GDF output
 $gdf = "nodedef>name VARCHAR,label VARCHAR,count INT\n";
 foreach($tags as $key => $value) {
@@ -165,10 +209,11 @@ foreach($edges as $key => $value) {
 	$gdf .= md5($tmpedge[0]) . "," . md5($tmpedge[1]) . "," . $value . "\n";
 }
 
-file_put_contents($filename.".gdf", $gdf);
+file_put_contents($filename."_tagnet.gdf", $gdf);
 
 
-// create CSV outputs
+
+// create user TAB output
 $tab_users = "id\tusername\tno_media_in_query\n";
 
 if($getuserinfo) {
@@ -185,11 +230,11 @@ if($getuserinfo) {
 	
 		$result = $instagram->getUser($user["id"]);
 	
-		$users[$user["id"]]["bio"] = preg_replace("/\s+/"," ",trim($result->data->bio));
-		$users[$user["id"]]["website"] = $result->data->website;
-		$users[$user["id"]]["media"] = $result->data->counts->media;
-		$users[$user["id"]]["followed_by"] = $result->data->counts->followed_by;
-		$users[$user["id"]]["follows"] = $result->data->counts->follows;
+		$users[$user["id"]]["user_bio"] = preg_replace("/\s+/"," ",trim($result->data->bio));
+		$users[$user["id"]]["user_website"] = $result->data->website;
+		$users[$user["id"]]["user_no_media"] = $result->data->counts->media;
+		$users[$user["id"]]["user_followed_by"] = $result->data->counts->followed_by;
+		$users[$user["id"]]["user_follows"] = $result->data->counts->follows;
 		
 		sleep(0.5);			// to be on the safe side with rate limiting
 	}
@@ -199,17 +244,72 @@ foreach($users as $id => $values) {
 	$tab_users .= implode("\t", $values) ."\n";
 }
 
-file_put_contents($filename.".tab", $tab_users);
+file_put_contents($filename."_users.tab", $tab_users);
 
 
 
+// create media TAB output
+if($getuserinfo) {
+	foreach($media as $medium) {
+		array_merge($media[$medium["id"]],$user[$medium["user_id"]]);
+	}
+}
+
+$tab_media = implode("\t", array_keys($media[array_shift(array_keys($media))])) . "\n";
+
+foreach($media as $medium) {
+	$tab_media .= implode("\t", $medium) ."\n";
+}
+
+file_put_contents($filename."_media.tab", $tab_media);
+
+
+
+
+// HTML Output
 echo '<br /><br />The script has extracted tags from ' . $stats["counter"] . ' media items that were posted between '.date("Y-m-d H:i:s",$stats["oldest"]).' and '.date("Y-m-d H:i:s",$stats["newest"]).'.<br /><br />
 
 your files:<br />
-<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'.gdf">'.$filename.'.gdf</a><br />
-<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'.tab">'.$filename.'.tab</a><br /><br />
+<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'_tagnet.gdf">'.$filename.'_tagnet.gdf</a><br />
+<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'_media.tab">'.$filename.'_media.tab</a><br />
+<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'_users.tab">'.$filename.'_users.tab</a><br /><br />
 
-NB: Instagram also retrieves media items that once were, but not longer are tagged with the requested term. The date range indicates when media items were posted, but Instagram retrieves media items ordered according to when they were tagged.';
+NB: Instagram also retrieves media items that once were, but not longer are tagged with the requested term. The date range indicates when media items were posted, but Instagram retrieves media items ordered according to when they were tagged.<br /><br />';
+
+//print_r($media);
+
+
+if($showimages) {
+	
+	//print_r($media);
+	
+	echo '<table>';
+	
+	echo '<tr>';
+	foreach(array_keys($media[array_shift(array_keys($media))]) as $title) {
+		echo '<th>'.$title.'</th>';
+	}
+	echo '</tr>';
+	
+	foreach($media as $medium) {
+		
+		echo '<tr>';
+		foreach($medium as $element) {
+			
+			if(preg_match("/\.jpg/", $element)) {
+				echo '<td><img src="'.$element.'"></td>';	
+			} else if(preg_match("/https/", $element)) {
+				echo '<td><a href="'.$element.'">'.$element.'</a></td>';
+			} else {
+				echo '<td>'.$element.'</td>';
+			}
+			
+		}
+		echo '</tr>';
+	}
+	echo '</table>';
+}
+
 
 ?>
 
