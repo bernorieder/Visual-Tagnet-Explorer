@@ -131,7 +131,7 @@ function extractTags($result) {
 		
 		// populate user lists
 		if(!isset($users[$medium->user->id])) {
-			$users[$medium->user->id] = array("id" => $medium->user->id, "user_username" => $medium->user->username,"no_media_in_query" => 0);
+			$users[$medium->user->id] = array("id" => $medium->user->id, "user_name" => $medium->user->username,"no_media_in_query" => 0);
 		}
 		$users[$medium->user->id]["no_media_in_query"]++;
 		
