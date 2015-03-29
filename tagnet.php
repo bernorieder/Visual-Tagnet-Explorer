@@ -74,6 +74,7 @@ if(isset($code)) {
 	// store user access token
 	$instagram->setAccessToken($data);
 
+	// create some basic variables
 	$filename = "instagram_" . md5($query) . "_" . $iterations . "_" .date("Y_m_d-H_i_s");
 	$taglist = array();
 	$ids = array();
@@ -89,6 +90,7 @@ if(isset($code)) {
 
 	echo "getting media, iterations:<br />";
 
+	// API calls for media, get one, then loop
 	$result = $instagram->getTagMedia($query, 20);		
 	extractTags($result);
 	
@@ -157,7 +159,7 @@ function extractTags($result) {
 }
 
 
-
+// create tag network
 $tags = array();
 $edges = array();
 
@@ -267,7 +269,7 @@ file_put_contents($filename."_media.tab", $tab_media);
 
 
 
-// HTML Output
+// HTML output
 echo '<br /><br />The script has extracted tags from ' . $stats["counter"] . ' media items that were posted between '.date("Y-m-d H:i:s",$stats["oldest"]).' and '.date("Y-m-d H:i:s",$stats["newest"]).'.<br /><br />
 
 your files:<br />
@@ -277,9 +279,9 @@ your files:<br />
 
 NB: Instagram also retrieves media items that once were, but not longer are tagged with the requested term. The date range indicates when media items were posted, but Instagram retrieves media items ordered according to when they were tagged.<br /><br />';
 
-//print_r($media);
 
 
+// HTML data table
 if($showimages) {
 	
 	//print_r($media);
