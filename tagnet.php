@@ -19,6 +19,7 @@
 		}
 		
 		table {
+			width: 100%;
 		    border-width: 0 0 1px 1px;
 		    border-spacing: 0;
 		    border-collapse: collapse;
@@ -42,8 +43,6 @@
 ini_set( 'default_charset', 'UTF-8' );
 ini_set('memory_limit','128M');
 ini_set('max_execution_time', 3000);
-
-ob_end_flush();
 
 require "conf.php";
 require "php-api/src/Instagram.php";
@@ -128,15 +127,15 @@ function extractTags($result) {
 		
 		// populate user lists
 		if(!isset($users[$medium->user->id])) {
-			$users[$medium->user->id] = array("id" => $medium->user->id, "username" => $medium->user->username,"count" => 0);
+			$users[$medium->user->id] = array("id" => $medium->user->id, "user_username" => $medium->user->username,"no_media_in_query" => 0);
 		}
-		$users[$medium->user->id]["count"]++;
+		$users[$medium->user->id]["no_media_in_query"]++;
 		
 		
 		// populate media lists
 		if(!isset($media[$medium->id])) {
 			
-			$tmp_location = (isset($medium->location->latitude)) ? $medium->location->latitude.",".$medium->location->longitude:"";
+			$tmp_location = (isset($medium->location->latitude)) ? $medium->location->latitude.", ".$medium->location->longitude:"";
 			
 			$media[$medium->id] = array("id" => $medium->id,
 										"created_time" => date("Y-m-d H:i:s", $medium->created_time),
@@ -226,7 +225,7 @@ if($getuserinfo) {
 	foreach($users as $user) {
 	
 		$usercounter++;
-		echo $usercounter . " ";
+		echo $usercounter . " "; flush(); ob_flush();
 	
 		$result = $instagram->getUser($user["id"]);
 	
@@ -251,7 +250,7 @@ file_put_contents($filename."_users.tab", $tab_users);
 // create media TAB output
 if($getuserinfo) {
 	foreach($media as $medium) {
-		array_merge($media[$medium["id"]],$user[$medium["user_id"]]);
+		$media[$medium["id"]] = array_merge($media[$medium["id"]],$users[$medium["user_id"]]);
 	}
 }
 
@@ -298,7 +297,7 @@ if($showimages) {
 			
 			if(preg_match("/\.jpg/", $element)) {
 				echo '<td><img src="'.$element.'"></td>';	
-			} else if(preg_match("/https/", $element)) {
+			} else if(preg_match("/https:/", $element) || preg_match("/http:/", $element)) {
 				echo '<td><a href="'.$element.'">'.$element.'</a></td>';
 			} else {
 				echo '<td>'.$element.'</td>';
