@@ -57,12 +57,15 @@ $instagram = new Instagram(array(
 
 // receive OAuth code parameter
 $code = $_GET['code'];
+
+
+// check GET variables
 $getuserinfo = ($_GET["getuserinfo"] == "on") ? true:false;
 $showimages = ($_GET["showimages"] == "off") ? false:$_GET["showimages"];
 
 
 // check whether the user has granted access
-if (isset($code)) {
+if(isset($code)) {
 
 	// receive OAuth token object
 	$data = $instagram->getOAuthToken($code);
@@ -87,7 +90,6 @@ if (isset($code)) {
 	echo "getting media, iterations:<br />";
 
 	$result = $instagram->getTagMedia($query, 20);		
-	//	print_r($result); exit;
 	extractTags($result);
 	
 	echo "1 ";
