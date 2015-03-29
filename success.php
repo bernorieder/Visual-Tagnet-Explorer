@@ -72,6 +72,18 @@ function extractTags($result) {
 				<td>(can add a lot of time to processing)</td>
 			</tr>
 			<tr>
+				<td>Preview media:</td>
+				<td>
+					<select name="showimages">
+						<option value="off">no media</option>
+						<option value="thumbnail">thumbnail</option>
+						<option value="low_resolution">low resolution</option>
+						<option value="standard_resolution">standard resolution</option>
+					</select>
+				</td>
+				<td>(can slow down the browser for big queries)</td>
+			</tr>
+			<tr>
 				<td colspan="3"><input type="submit" /></td>
 			</tr>
 		</form>
