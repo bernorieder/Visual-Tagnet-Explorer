@@ -30,6 +30,7 @@ $loginUrl = $instagram->getLoginUrl();
 		
 		html,body {
 			font-family: Arial,Helvetica,sans-serif;
+			font-size: 12px;
 		}
 		
 	</style>
@@ -38,7 +39,7 @@ $loginUrl = $instagram->getLoginUrl();
 
 <body>
 
-	<h1>Instagram Tagnet</h1>
+	<h1>Instagram Hashtag Explorer</h1>
 
 	<p>This script retrieves the latest media tagged with a specified term from Instragram and creates a co-tag file (GDF format) to analyze e.g. in <a href="http://gephi.org" target="_blank">gephi</a>.</p>
 
