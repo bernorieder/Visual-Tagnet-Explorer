@@ -24,7 +24,7 @@ $loginUrl = $instagram->getLoginUrl();
 <head>
 	<meta charset="utf-8">
 	
-	<title>Instagram Tagnet</title>
+	<title>Instagram Hashtag Explorer</title>
 	
 	<style type="text/css">
 		
