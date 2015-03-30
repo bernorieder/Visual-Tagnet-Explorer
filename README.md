@@ -7,3 +7,5 @@ A small script that connects to the Instagram API with a user's credentials, ret
 - a tabular file with user information
 
 This uses the PHP Instagram API wrapper by Christian Metz (https://github.com/cosenary/Instagram-PHP-API).
+
+For more information, check the wiki page: https://github.com/bernorieder/instagram-hashtag-explorer/wiki/Instagram-Hashtag-Explorer.
