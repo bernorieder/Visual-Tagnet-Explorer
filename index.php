@@ -34,7 +34,6 @@ $loginUrl = $instagram->getLoginUrl();
 		}
 		
 	</style>
-	
 </head>
 
 <body>
