@@ -30,7 +30,7 @@ function extractTags($result) {
 <head>
 	<meta charset="utf-8">
 	
-	<title>Instagram Tagnet</title>
+	<title>Instagram Hashtag Explorer</title>
 	
 	<style type="text/css">
 		
@@ -49,7 +49,7 @@ function extractTags($result) {
 
 <body>
 
-	<h1>Instagram Tagnet</h1>
+	<h1>Instagram Hashtag Explorer</h1>
 
 	<p>You are now connected to Instagram. Specify a tag and the number of media to retrieve:</p>
 
