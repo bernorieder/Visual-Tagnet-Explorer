@@ -34,7 +34,7 @@
 
 	</style>
 	
-	<h1>Instagram Tagnet</h1>
+	<h1>Instagram Hashtag Explorer</h1>
 	
 </head>
 
@@ -140,6 +140,7 @@ function extractTags($result) {
 		if(!isset($media[$medium->id])) {
 			
 			$tmp_location = (isset($medium->location->latitude)) ? $medium->location->latitude.", ".$medium->location->longitude:"";
+			$tmp_thumbnail = (isset($medium->images->{$showimages}->url)) ? $medium->images->{$showimages}->url:"";
 			
 			$media[$medium->id] = array("id" => $medium->id,
 										"created_time" => date("Y-m-d H:i:s", $medium->created_time),
@@ -149,7 +150,7 @@ function extractTags($result) {
 										"filter" => $medium->filter,
 										"link" => $medium->link,
 										"caption" => preg_replace("/\s+/"," ",trim($medium->caption->text)),
-										"thumbnail" => $medium->images->{$showimages}->url,
+										"thumbnail" => $tmp_thumbnail,
 										"tags" => implode(", ", $medium->tags),
 										"user_name" => $medium->user->username,
 										"user_id" => $medium->user->id
