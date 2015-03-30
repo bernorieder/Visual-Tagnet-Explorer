@@ -44,7 +44,6 @@ function extractTags($result) {
 		}
 		
 	</style>
-	
 </head>
 
 <body>
