@@ -1,4 +1,4 @@
-Instagram hHshtag Explorer
+Instagram Hashtag Explorer
 ==========================
 
 A small script that connects to the Instagram API with a user's credentials, retrieves the latest media tagged with a specified term, and creates:
