@@ -33,10 +33,9 @@
 
 
 	</style>
-	
-	<h1>Instagram Hashtag Explorer</h1>
-	
 </head>
+	
+<h1>Instagram Hashtag Explorer</h1>
 
 <?php
 
