@@ -61,7 +61,7 @@ function extractTags($result) {
 				<td></td>
 			</tr>
 			<tr>
-				<td>Interations:</td>
+				<td>Iterations:</td>
 				<td><input type="text" name="iterations" max="100" /> </td>
 				<td>(max. 100, one iteration gets 20 items)</td>
 			</tr>
