@@ -313,7 +313,6 @@ if($showimages) {
 	echo '</table>';
 }
 
-
 ?>
 
 </body>
