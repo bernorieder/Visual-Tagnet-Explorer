@@ -31,7 +31,6 @@
 		    border-width: 1px 1px 0 0;
 		}
 
-
 	</style>
 </head>
 	
@@ -61,6 +60,8 @@ $code = $_GET['code'];
 // check GET variables
 $getuserinfo = ($_GET["getuserinfo"] == "on") ? true:false;
 $showimages = ($_GET["showimages"] == "off") ? false:$_GET["showimages"];
+$query = urlencode(preg_replace("/#/","",trim($_GET["tag"])));
+$iterations= trim($_GET["iterations"]);
 
 
 // check whether the user has granted access
@@ -83,9 +84,6 @@ if(isset($code)) {
 	$stats["counter"] = 0;
 	$stats["oldest"] = 10000000000000000;
 	$stats["newest"] = 0;
-
-	$query = urlencode(preg_replace("/#/","",trim($_GET["tag"])));
-	$iterations= trim($_GET["iterations"]);
 
 	echo "getting media, iterations:<br />";
 
@@ -111,9 +109,13 @@ if(isset($code)) {
 
 function extractTags($result) {
 
+	//print_r($result);
+
 	global $taglist,$ids,$stats,$users,$media,$showimages;
 
 	foreach ($result->data as $medium) {
+
+		if($medium->type != "image") { continue; }
 
 		if(!isset($ids[$medium->id])) {
 			$ids[$medium->id] = true;
@@ -137,9 +139,11 @@ function extractTags($result) {
 		
 		// populate media lists
 		if(!isset($media[$medium->id])) {
-			
+
+			echo $medium->images->thumbnail->url;
+
 			$tmp_location = (isset($medium->location->latitude)) ? $medium->location->latitude.", ".$medium->location->longitude:"";
-			$tmp_thumbnail = (isset($medium->images->{$showimages}->url)) ? $medium->images->{$showimages}->url:"";
+			$tmp_thumbnail = ($showimages == false) ? $medium->images->thumbnail->url:$medium->images->{$showimages}->url;
 			
 			$media[$medium->id] = array("id" => $medium->id,
 										"created_time" => date("Y-m-d H:i:s", $medium->created_time),
