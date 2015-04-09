@@ -109,8 +109,6 @@ if(isset($code)) {
 
 function extractTags($result) {
 
-	//print_r($result);
-
 	global $taglist,$ids,$stats,$users,$media,$showimages;
 
 	foreach ($result->data as $medium) {
@@ -139,8 +137,6 @@ function extractTags($result) {
 		
 		// populate media lists
 		if(!isset($media[$medium->id])) {
-
-			echo $medium->images->thumbnail->url;
 
 			$tmp_location = (isset($medium->location->latitude)) ? $medium->location->latitude.", ".$medium->location->longitude:"";
 			$tmp_thumbnail = ($showimages == false) ? $medium->images->thumbnail->url:$medium->images->{$showimages}->url;
