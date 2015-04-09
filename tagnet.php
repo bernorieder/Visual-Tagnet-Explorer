@@ -273,9 +273,9 @@ file_put_contents($filename."_media.tab", $tab_media);
 echo '<br /><br />The script has extracted tags from ' . $stats["counter"] . ' media items that were posted between '.date("Y-m-d H:i:s",$stats["oldest"]).' and '.date("Y-m-d H:i:s",$stats["newest"]).'.<br /><br />
 
 your files:<br />
-<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'_tagnet.gdf">'.$filename.'_tagnet.gdf</a><br />
-<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'_media.tab">'.$filename.'_media.tab</a><br />
-<a href="http://labs.polsys.net/tools/instagram/tagnet/'.$filename.'_users.tab">'.$filename.'_users.tab</a><br /><br />
+<a href="'.$base_url.$filename.'_tagnet.gdf">'.$filename.'_tagnet.gdf</a><br />
+<a href="'.$base_url.$filename.'_media.tab">'.$filename.'_media.tab</a><br />
+<a href="'.$base_url.$filename.'_users.tab">'.$filename.'_users.tab</a><br /><br />
 
 NB: Instagram also retrieves media items that once were, but not longer are tagged with the requested term. The date range indicates when media items were posted, but Instagram retrieves media items ordered according to when they were tagged.<br /><br />';
 
