@@ -1,5 +1,7 @@
 <?php
 
+$base_url = "http://yourserver.com/yourdirectory/";
+
 // to get the following variables, register a client at http://instagram.com/developer/clients/register/
 
 $apiKey = "";
