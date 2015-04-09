@@ -97,7 +97,7 @@ if(isset($code)) {
 
 	for($i = 0; $i < $iterations-1; $i++) {
 		echo $i + 2 . " ";
-		$result = $instagram->pagination($result);
+		$result = $instagram->pagination($result,20);
 		extractTags($result);
 	}
 
