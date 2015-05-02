@@ -32,18 +32,7 @@ function extractTags($result) {
 	
 	<title>Instagram Hashtag Explorer</title>
 	
-	<style type="text/css">
-		
-		html,body {
-			font-family: Arial,Helvetica,sans-serif;
-			font-size: 12px;
-		}
-		
-		td {
-			padding: 5px;
-		}
-		
-	</style>
+	<link rel="stylesheet" type="text/css" href="main.css" />
 </head>
 
 <body>
@@ -59,6 +48,8 @@ function extractTags($result) {
 		<li>a co-tag file (GDF format) to analyze e.g. in <a href="http://gephi.org" target="_blank">gephi</a>;</li>
 	</ul>
 	</p>
+	
+	<p>Source code and some documentation are available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
 		
 	<p>Specify a tag and the number of media to retrieve:</p>
 
@@ -98,7 +89,7 @@ function extractTags($result) {
 		</form>
 	<table>
 	
-	<p>NB: the public version of this script may run out of memory or into rate limitations. Source code is available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
+	<p>NB: the public version of this script may run out of memory or into rate limitations.</p>
 	
 </body>
 </html>
