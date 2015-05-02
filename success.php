@@ -50,6 +50,8 @@ function extractTags($result) {
 	</p>
 	
 	<p>Source code and some documentation are available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
+	
+	<hr />
 		
 	<p>Specify a tag and the number of media to retrieve:</p>
 
