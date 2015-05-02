@@ -47,6 +47,9 @@ $loginUrl = $instagram->getLoginUrl();
 		<li>a co-tag file (GDF format) to analyze e.g. in <a href="http://gephi.org" target="_blank">gephi</a>;</li>
 	</ul>
 	</p>
+	
+	<p>Source code is available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
+	
 	<a href="<?php echo $loginUrl; ?>">Connect to Instagram</a>
 
 </body>
