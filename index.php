@@ -26,14 +26,7 @@ $loginUrl = $instagram->getLoginUrl();
 	
 	<title>Instagram Hashtag Explorer</title>
 	
-	<style type="text/css">
-		
-		html,body {
-			font-family: Arial,Helvetica,sans-serif;
-			font-size: 12px;
-		}
-		
-	</style>
+	<link rel="stylesheet" type="text/css" href="main.css" />
 </head>
 
 <body>
@@ -48,9 +41,9 @@ $loginUrl = $instagram->getLoginUrl();
 	</ul>
 	</p>
 	
-	<p>Source code is available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
+	<p>Source code and some documentation are available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
 	
-	<a href="<?php echo $loginUrl; ?>">Connect to Instagram</a>
+	Start by <a href="<?php echo $loginUrl; ?>">connecting to Instagram</a>.
 
 </body>
 </html>
