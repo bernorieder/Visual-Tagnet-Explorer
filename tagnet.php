@@ -6,12 +6,9 @@
 
 	<title>Instagram Hashtag Explorer</title>
 	
+	<link rel="stylesheet" type="text/css" href="main.css" />
+	
 	<style type="text/css">
-		
-		html,body {
-			font-family: Arial,Helvetica,sans-serif;
-			font-size: 12px;
-		}
 		
 		table, td, th {
 		    border-color: #000;
@@ -27,7 +24,7 @@
 		
 		td, th {
 		    margin: 0;
-		    padding: 4px;
+		    padding: 3px;
 		    border-width: 1px 1px 0 0;
 		}
 
