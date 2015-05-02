@@ -50,7 +50,17 @@ function extractTags($result) {
 
 	<h1>Instagram Hashtag Explorer</h1>
 
-	<p>You are now connected to Instagram. Specify a tag and the number of media to retrieve:</p>
+	<p>You are now connected to Instagram.</p>
+	
+	<p>This script retrieves the latest media tagged with a specified term from Instragram and creates:
+	<ul>	
+		<li>a tabular file containing a list of media with losts of meta-information;</li>
+		<li>a tabular file with information on the users related to those media;</li>
+		<li>a co-tag file (GDF format) to analyze e.g. in <a href="http://gephi.org" target="_blank">gephi</a>;</li>
+	</ul>
+	</p>
+		
+	<p>Specify a tag and the number of media to retrieve:</p>
 
 	<table>
 		<form action="tagnet.php" method="get">
@@ -68,13 +78,13 @@ function extractTags($result) {
 			<tr>
 				<td>Get user infos:</td>
 				<td><input type="checkbox" name="getuserinfo" max="100" /></td>
-				<td>(can add a lot of time to processing)</td>
+				<td>(retrieves additional information for every user, e.g. user bio, can add a lot of time to processing)</td>
 			</tr>
 			<tr>
 				<td>Preview media:</td>
 				<td>
 					<select name="showimages">
-						<option value="off">no media</option>
+						<option value="off">no preview</option>
 						<option value="thumbnail">thumbnail</option>
 						<option value="low_resolution">low resolution</option>
 						<option value="standard_resolution">standard resolution</option>
