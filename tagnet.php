@@ -35,8 +35,8 @@
 
 <?php
 
-ini_set( 'default_charset', 'UTF-8' );
-ini_set('memory_limit','128M');
+ini_set('default_charset', 'UTF-8');
+ini_set('memory_limit', '128M');
 ini_set('max_execution_time', 3000);
 
 require "conf.php";
