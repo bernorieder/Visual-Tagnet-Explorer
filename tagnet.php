@@ -106,6 +106,12 @@ if(isset($code)) {
 
 function extractTags($result) {
 
+	if(isset($result->meta->error_message)) {
+		print_r($result->meta);
+		echo '<p>Error may be related to <a href="http://blog.instagram.com/post/21454597658/instagrams-new-guidelines-against-self-harm">http://blog.instagram.com/post/21454597658/instagrams-new-guidelines-against-self-harm</a></p>';
+		exit;
+	}
+
 	global $taglist,$ids,$stats,$users,$media,$showimages;
 
 	foreach ($result->data as $medium) {
