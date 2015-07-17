@@ -33,9 +33,9 @@ $loginUrl = $instagram->getLoginUrl();
 
 	<h1>Instagram Hashtag Explorer</h1>
 
-	<p>This script retrieves the latest media tagged with a specified term from Instragram and creates:
+	<p>This script retrieves either the latest media tagged with a specified term or the media around a particular location and creates:
 	<ul>	
-		<li>a tabular file containing a list of media with losts of meta-information;</li>
+		<li>a tabular file containing a list of media with lots of meta-information;</li>
 		<li>a tabular file with information on the users related to those media;</li>
 		<li>a co-tag file (GDF format) to analyze e.g. in <a href="http://gephi.org" target="_blank">gephi</a>;</li>
 	</ul>
