@@ -61,7 +61,7 @@ $getuserinfo = ($_GET["getuserinfo"] == "on") ? true:false;
 $showimages = ($_GET["showimages"] == "off") ? false:$_GET["showimages"];
 $query = urlencode(preg_replace("/#/","",trim($_GET["tag"])));
 $iterations= trim($_GET["iterations"]);
-
+$mode = $_GET["mode"];
 
 // check whether the user has granted access
 if(isset($code)) {
@@ -84,19 +84,56 @@ if(isset($code)) {
 	$stats["oldest"] = 10000000000000000;
 	$stats["newest"] = 0;
 
-	echo "getting media, iterations:<br />";
 
-	// API calls for media, get one, then loop
-	$result = $instagram->getTagMedia($query, 20);		
-	extractTags($result);
-	
-	echo "1 ";
 
-	for($i = 0; $i < $iterations-1; $i++) {
-		echo $i + 2 . " ";
-		$result = $instagram->pagination($result,20);
+	if($mode == "last") {
+		
+		echo "getting media, iterations:<br />";
+		
+		if($_GET["tag"] == "") { echo "missing tag"; exit; }
+		if($_GET["iterations"] > 100) { echo "iteration parameter problem"; exit; }
+		
+		// API calls for media, get one, then loop
+		$result = $instagram->getTagMedia($query, 20);		
 		extractTags($result);
+		
+		echo "1 "; flush(); ob_flush();
+	
+		for($i = 0; $i < $iterations-1; $i++) {
+			echo $i + 2 . " ";
+			$result = $instagram->pagination($result,20);
+			extractTags($result);
+		}
 	}
+
+	
+	if($mode == "location") {
+		
+		echo "getting media, retrieved:<br />";
+		
+		if($_GET["lat"] == "" || $_GET["lng"] == "" || $_GET["distance"] == "") { echo "location parameter problem"; exit; }
+		if($_GET["date_start"] == "" || $_GET["date_end"] == "") { echo "timespan parameter problem"; exit; }
+		
+		$lat = $_GET["lat"];
+		$lng = $_GET["lng"];
+		$distance = $_GET["distrance"];
+		$date_start = strtotime($_GET["date_start"] . " 23:59:59");
+		$date_end = strtotime($_GET["date_end"] . " 00:00:00");
+		$date_end_fake = $date_end - 7 * 60 * 60 * 24;
+				
+		while($date_start > $date_end) {
+			
+			$result = $instagram->searchMedia($lat,$lng,$distance,$date_end_fake,$date_start);
+			extractTags($result);
+		
+			foreach ($result->data as $medium) {
+				if($medium->created_time < $date_start ) {  $date_start = $medium->created_time; }
+			}
+		
+			echo count($media) . "(" . date("Y-m-d H:i:s",$date_start) . ") "; flush(); ob_flush();
+		}
+	}
+
 
 } else {
 	
@@ -117,13 +154,13 @@ function extractTags($result) {
 	global $taglist,$ids,$stats,$users,$media,$showimages;
 
 	foreach ($result->data as $medium) {
-
+		
 		if($medium->type != "image") { continue; }
 
 		if(!isset($ids[$medium->id])) {
 			$ids[$medium->id] = true;
 		} else {
-			echo "already in bucket";
+			continue;
 		}
 
 		$taglist[] = $medium->tags;
