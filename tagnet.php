@@ -30,7 +30,9 @@
 
 	</style>
 </head>
-	
+
+<body>
+
 <h1>Instagram Hashtag Explorer</h1>
 
 <?php
