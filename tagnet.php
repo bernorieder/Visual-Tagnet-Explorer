@@ -74,7 +74,6 @@ if(isset($code)) {
 	$instagram->setAccessToken($data);
 
 	// create some basic variables
-	$filename = "instagram_" . md5($query) . "_" . $iterations . "_" .date("Y_m_d-H_i_s");
 	$taglist = array();
 	$ids = array();
 	$stats = array();
@@ -85,8 +84,9 @@ if(isset($code)) {
 	$stats["newest"] = 0;
 
 
-
 	if($mode == "last") {
+		
+		$filename = "data/instagram_" . md5($query) . "_" . $iterations . "_" .date("Y_m_d-H_i_s");
 		
 		echo "getting media, iterations:<br />";
 		
@@ -108,6 +108,8 @@ if(isset($code)) {
 
 	
 	if($mode == "location") {
+		
+		$filename = "data/instagram_" . $_GET["lat"] . "_" . $_GET["lng"] . "_" . $_GET["distance"] . "_" .date("Y_m_d-H_i_s");
 		
 		echo "getting media, retrieved:<br />";
 		
@@ -312,14 +314,13 @@ file_put_contents($filename."_media.tab", $tab_media);
 
 
 // HTML output
-echo '<br /><br />The script has extracted tags from ' . $stats["counter"] . ' media items that were posted between '.date("Y-m-d H:i:s",$stats["oldest"]).' and '.date("Y-m-d H:i:s",$stats["newest"]).'.<br /><br />
+echo '<p>The script has extracted tags from ' . $stats["counter"] . ' media items that were posted between '.date("Y-m-d H:i:s",$stats["oldest"]).' and '.date("Y-m-d H:i:s",$stats["newest"]).'.</p>';
 
-your files:<br />
-<a href="'.$base_url.$filename.'_tagnet.gdf">'.$filename.'_tagnet.gdf</a><br />
-<a href="'.$base_url.$filename.'_media.tab">'.$filename.'_media.tab</a><br />
-<a href="'.$base_url.$filename.'_users.tab">'.$filename.'_users.tab</a><br /><br />
+$files = array($filename."_tagnet.gdf",$filename."_media.tab",$filename."_users.tab");
 
-NB: Instagram also retrieves media items that once were, but not longer are tagged with the requested term. The date range indicates when media items were posted, but Instagram retrieves media items ordered according to when they were tagged.<br /><br />';
+zipit($filename,$files);
+
+echo 'NB: Instagram also retrieves media items that once were, but not longer are tagged with the requested term. The date range indicates when media items were posted, but Instagram retrieves media items ordered according to when they were tagged.<br /><br />';
 
 
 
@@ -354,6 +355,35 @@ if($showimages) {
 	}
 	echo '</table>';
 }
+
+
+function zipit($filename,$files) {
+
+	echo '<p>Compressing files...</p>'; flush(); ob_flush();
+
+	$zip = new ZipArchive();
+	$filename = $filename . ".zip";
+
+	if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
+    	exit("cannot open <$filename>\n");
+	}
+
+	foreach ($files as $file) {
+		$cleanfile = preg_replace("/\.\/data\//", "", $file);		// cleaning up the filename to counter uncompress problems (with "." maybe?)
+		$zip->addFile($file,$cleanfile);
+		echo $cleanfile . "<br />";
+	}
+
+	echo '<p>Your files have been generated. ' . $zip->numFiles . ' files were zipped. ';
+	echo 'Download the <a href="'.$filename.'">zip archive</a>.</p>';
+
+	$zip->close();
+
+	foreach ($files as $file) {
+		unlink($file);
+	}
+}
+
 
 ?>
 
