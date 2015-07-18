@@ -6,7 +6,6 @@ require "conf.php";
 require "php-api/src/Instagram.php";
 use MetzWeb\Instagram\Instagram;
 
-$_GET['code'];
 
 if (isset($_GET['error']) || !isset($_GET['code'])) {
 	echo 'An error occurred: ' . $_GET['error_description'];
