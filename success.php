@@ -11,16 +11,6 @@ if (isset($_GET['error']) || !isset($_GET['code'])) {
 	echo 'An error occurred: ' . $_GET['error_description'];
 }
 
-function extractTags($result) {
-
-	global $taglist;
-
-	foreach ($result->data as $media) {
-		$taglist[] = $media->tags;
-	}
-
-}
-
 ?>
 
 <!doctype html>
