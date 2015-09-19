@@ -24,7 +24,7 @@
 		
 		td, th {
 		    margin: 0;
-		    padding: 3px;
+		    padding: 2px;
 		    border-width: 1px 1px 0 0;
 		}
 
@@ -343,7 +343,7 @@ if($showimages) {
 		foreach($medium as $element) {
 			
 			if(preg_match("/\.jpg/", $element)) {
-				echo '<td><img src="'.$element.'"></td>';	
+				echo '<td><img src="'.$element.'" /></td>';	
 			} else if(preg_match("/https:/", $element) || preg_match("/http:/", $element)) {
 				echo '<td><a href="'.$element.'">'.$element.'</a></td>';
 			} else {
