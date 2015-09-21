@@ -49,6 +49,8 @@ if (isset($_GET['error']) || !isset($_GET['code'])) {
 			<p>When using the location mode and a large date range, retrieval may take very long, run out of memory, or run into rate limits.<br />
 				It is strongly recommended to test a very small date range first (e.g. a single day), to get an understanding how many media are posted at that location.</p>
 				
+			<p>For more information on how to use this tool, check out this <a href="https://www.youtube.com/watch?v=o07aUKdRv0g" target="_blank">video</a></p>
+				
 			<p>Check <a href="https://support.google.com/maps/answer/18539?hl=en" target="_blank">this page</a> for how to find lat/lng coordinates with Google Maps.</p>
 			
 			<p>Source code and some documentation are available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
