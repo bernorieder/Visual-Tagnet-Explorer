@@ -343,7 +343,7 @@ if($showimages) {
 		foreach($medium as $element) {
 			
 			if(preg_match("/\.jpg/", $element)) {
-				echo '<td><img src="'.$element.'" /></td>';	
+				echo '<td><div><img src="'.$element.'" /></div></td>';	
 			} else if(preg_match("/https:/", $element) || preg_match("/http:/", $element)) {
 				echo '<td><a href="'.$element.'">'.$element.'</a></td>';
 			} else {
