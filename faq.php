@@ -52,7 +52,7 @@
 			
 			<h2>I don't know how to use Instagram Hashtag Explorer, can you help me?</h2>
 			
-			<p>Unfortunately, I do not have the spare time to provide any assistance for this app and can therefore not respond to inquiries concerning how to use the app or how
+			<p>Unfortunately, I do not have the spare time to provide any assistance for this app and can therefore not respond to inquiries concerning how to use it or how
 			to solve a particular research problem with it.</p>
 			
 			<p>There is an <a href="https://www.youtube.com/watch?v=o07aUKdRv0g" target="_blank">introductory video</a> and the interface 
