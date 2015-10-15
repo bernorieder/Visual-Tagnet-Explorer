@@ -57,8 +57,7 @@
 			
 			<p>There is an <a href="https://www.youtube.com/watch?v=o07aUKdRv0g" target="_blank">introductory video</a> and the interface 
 			contains a description of what the tool does and further up you can find links to the relevant sections of the API. Most importantly, to make sense of
-			the data, a good
-			understanding of Instagram's basic architecture is required. The <a href="https://instagram.com/developer/" target="_blank">documentation</a>
+			the data, a good understanding of Instagram's basic architecture is required. The <a href="https://instagram.com/developer/" target="_blank">documentation</a>
 			for Instagram's API has comprehensive descriptions of entities and metrics.</p>
 			
 			<p>If you would like to learn more about this kind of research, you may want to consider joining the Digital Methods Initiative's
