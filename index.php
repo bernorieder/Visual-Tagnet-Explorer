@@ -48,7 +48,7 @@ $loginUrl = $instagram->getLoginUrl();
 		
 		<p>For more information on how to use this tool, check out this <a href="https://www.youtube.com/watch?v=o07aUKdRv0g" target="_blank">video</a>.</p>
 		
-		<p>Source code and some documentation are available <a href="https://github.com/bernorieder/instagram-tagnet" target="_blank">here</a>.</p>
+		<p>Before using the tool, you may want to have a look at the FAQ section <a href="faq.php" target="_blank">here</a>.</p>
 		
 		<p>Launch the tool by <a href="<?php echo $loginUrl; ?>">connecting to Instagram</a>.<p>
 		
