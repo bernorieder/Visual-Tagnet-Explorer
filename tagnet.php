@@ -38,7 +38,7 @@
 <?php
 
 ini_set('default_charset', 'UTF-8');
-ini_set('memory_limit', '128M');
+ini_set('memory_limit', '512M');
 ini_set('max_execution_time', 3000);
 
 require "conf.php";
@@ -55,7 +55,6 @@ $instagram = new Instagram(array(
 // receive OAuth code parameter
 $code = $_GET['code'];
 
-
 // check GET variables
 $getuserinfo = ($_GET["getuserinfo"] == "on") ? true:false;
 $showimages = ($_GET["showimages"] == "off") ? false:$_GET["showimages"];
@@ -66,12 +65,14 @@ $mode = $_GET["mode"];
 // check whether the user has granted access
 if(isset($code)) {
 
-	// receive OAuth token object
 	$data = $instagram->getOAuthToken($code);
-	$username = $username = $data->user->username;
-
-	// store user access token
+	$username = $data->user->username;
 	$instagram->setAccessToken($data);
+	
+	if(isset($data->error_message)) {
+		echo 'This tool currently needs to reauthenticate every call, please go back to <a href="https://tools.digitalmethods.net/netvizz/instagram/">https://tools.digitalmethods.net/netvizz/instagram/</a> to long in again.';
+		exit;
+	}
 
 	// create some basic variables
 	$taglist = array();
@@ -91,10 +92,13 @@ if(isset($code)) {
 		echo "getting media, iterations:<br />";
 		
 		if($_GET["tag"] == "") { echo "missing tag"; exit; }
-		if($_GET["iterations"] > 100) { echo "iteration parameter problem"; exit; }
+		if($_GET["iterations"] > 1000) { echo "iteration parameter problem"; exit; }
 		
 		// API calls for media, get one, then loop
 		$result = $instagram->getTagMedia($query, 20);		
+
+		if(isset($result->error_type)) { print_r($result); }
+		
 		extractTags($result);
 		
 		echo "1 "; flush(); ob_flush();
