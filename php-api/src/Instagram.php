@@ -275,7 +275,7 @@ class Instagram {
    * @return mixed
    */
   public function getTagMedia($name, $limit = 0) {
-    return $this->_makeCall('tags/' . $name . '/media/recent', false, array('count' => $limit));
+    return $this->_makeCall('tags/' . $name . '/media/recent', true, array('count' => $limit));
   }
 
   /**
@@ -430,6 +430,9 @@ class Instagram {
    * @return mixed
    */
   protected function _makeCall($function, $auth = false, $params = null, $method = 'GET') {
+    
+    $auth = true;
+    
     if (false === $auth) {
       // if the call doesn't requires authentication
       $authMethod = '?client_id=' . $this->getApiKey();
@@ -455,6 +458,8 @@ class Instagram {
     if (true === $this->_signedheader && 'GET' !== $method) {
       $headerData[] = 'X-Insta-Forwarded-For: ' . $this->_signHeader();
     }
+
+	//print $apiCall;
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $apiCall);
