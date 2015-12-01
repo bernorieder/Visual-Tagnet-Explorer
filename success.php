@@ -71,7 +71,7 @@ if (isset($_GET['error']) || !isset($_GET['code'])) {
 		<tr>
 			<td></td>
 			<td>Iterations:</td>
-			<td><input type="text" name="iterations" max="100" /> (max. 1000, one iteration gets 20 items; 10 iterations =~ 200 items)</td>
+			<td><input type="text" name="iterations" value="1" max="1000" /> (max. 1000, one iteration gets 20 items; 10 iterations =~ 200 items)</td>
 		</tr>
 		
 		<tr>
