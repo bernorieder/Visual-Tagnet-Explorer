@@ -382,7 +382,7 @@ class Instagram {
   public function pagination($obj, $limit = 0) {
     if (true === is_object($obj) && !is_null($obj->pagination)) {
       if (!isset($obj->pagination->next_url)) {
-        return;
+        return false;
       }
       $apiCall = explode('?', $obj->pagination->next_url);
       if (count($apiCall) < 2) {
