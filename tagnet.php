@@ -98,7 +98,7 @@ if(isset($code)) {
 		$result = $instagram->getTagMedia($query, 20);		
 
 		if(isset($result->error_type)) { print_r($result); }
-		
+				
 		extractTags($result);
 		
 		echo "1 "; flush(); ob_flush();
@@ -106,6 +106,10 @@ if(isset($code)) {
 		for($i = 0; $i < $iterations-1; $i++) {
 			echo $i + 2 . " ";
 			$result = $instagram->pagination($result,20);
+			if($result == false) {
+				echo "The script has retrieved all available media.";
+				break;
+			}
 			extractTags($result);
 		}
 	}
@@ -122,7 +126,7 @@ if(isset($code)) {
 		
 		$lat = $_GET["lat"];
 		$lng = $_GET["lng"];
-		$distance = $_GET["distrance"];
+		$distance = $_GET["distance"];
 		$date_start = strtotime($_GET["date_start"] . " 23:59:59");
 		$date_end = strtotime($_GET["date_end"] . " 00:00:00");
 		$date_end_fake = $date_end - 7 * 60 * 60 * 24;
@@ -130,14 +134,25 @@ if(isset($code)) {
 		while($date_start > $date_end) {
 			
 			$result = $instagram->searchMedia($lat,$lng,$distance,$date_end_fake,$date_start);
+			
+			//print_r($result);
+			
 			extractTags($result);
 		
 			foreach ($result->data as $medium) {
 				if($medium->created_time < $date_start ) {  $date_start = $medium->created_time; }
 			}
+			
+			if($oldcount == count($media)) {
+				echo "time hopping 10 seconds "; flush(); ob_flush();
+				$date_start -= 10;
+			} else {
+				echo count($media) . "(" . date("Y-m-d H:i:s",$date_start) . ") "; flush(); ob_flush();
+			}
+			
+			$oldcount = count($media);
 		
-			echo count($media) . "(" . date("Y-m-d H:i:s",$date_start) . ") "; flush(); ob_flush();
-		}
+			}
 	}
 
 
