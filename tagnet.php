@@ -240,7 +240,7 @@ foreach($taglist as $tmptags) {
 			$tags[$tmptags[$i]]++;
 		}
 
-		for($j = $i; $j < count($tmptags); $j++) {
+		for($j = $i + 1; $j < count($tmptags); $j++) {
 
 			$tmptags[$j] = strtolower($tmptags[$j]);
 			$tmptags[$j] = preg_replace("/,/", " ", $tmptags[$j]);
