@@ -38,7 +38,7 @@
 <?php
 
 ini_set('default_charset', 'UTF-8');
-ini_set('memory_limit', '512M');
+ini_set('memory_limit', '1024M');
 ini_set('max_execution_time', 3000);
 
 require "conf.php";
@@ -104,7 +104,7 @@ if(isset($code)) {
 		echo "1 "; flush(); ob_flush();
 	
 		for($i = 0; $i < $iterations-1; $i++) {
-			echo $i + 2 . " ";
+			echo $i + 2 . " "; flush(); ob_flush();
 			$result = $instagram->pagination($result,20);
 			if($result == false) {
 				echo "The script has retrieved all available media.";
@@ -166,6 +166,8 @@ if(isset($code)) {
 
 function extractTags($result) {
 
+	//echo "|".count($result->data)."|";
+
 	if(isset($result->meta->error_message)) {
 		print_r($result->meta);
 		echo '<p>Error may be related to <a href="http://blog.instagram.com/post/21454597658/instagrams-new-guidelines-against-self-harm">http://blog.instagram.com/post/21454597658/instagrams-new-guidelines-against-self-harm</a></p>';
@@ -203,6 +205,8 @@ function extractTags($result) {
 
 			$tmp_location = (isset($medium->location->latitude)) ? $medium->location->latitude.", ".$medium->location->longitude:"";
 			$tmp_thumbnail = ($showimages == false) ? $medium->images->thumbnail->url:$medium->images->{$showimages}->url;
+			
+			//print_r($medium); exit;
 			
 			$media[$medium->id] = array("id" => $medium->id,
 										"created_time" => date("Y-m-d H:i:s", $medium->created_time),
