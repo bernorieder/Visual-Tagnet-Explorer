@@ -14,7 +14,7 @@ $instagram = new Instagram(array(
 ));
 
 // create login URL
-$loginUrl = $instagram->getLoginUrl();
+$loginUrl = $instagram->getLoginUrl(array("public_content"));
 
 ?>
 
@@ -24,7 +24,7 @@ $loginUrl = $instagram->getLoginUrl();
 <head>
 	<meta charset="utf-8">
 	
-	<title>Instagram Hashtag Explorer</title>
+	<title>Visual Tagnet Explorer</title>
 	
 	<link rel="stylesheet" type="text/css" href="main.css" />
 </head>
@@ -36,9 +36,15 @@ $loginUrl = $instagram->getLoginUrl();
 	<tr>
 		<td >
 			
-		<h1>Instagram Hashtag Explorer</h1>
+		<h1>Visual Tagnet Explorer</h1>
 	
-		<p>This small tool retrieves either the latest media tagged with a specified term or the media around a particular location and creates:
+		<hr />
+	
+		<p><strong style="color:red;">Since Instagram has recently changed its platform regulations, this tool has stopped working on June 1 2016. More information <a href="http://thepoliticsofsystems.net/2016/05/closing-apis-and-the-public-scrutiny-of-very-large-online-platforms/">here</a>.</strong></p>
+	
+		<hr />
+	
+		<p>This is an app for researchers and brand analysts to create Instagram co-tag networks around keywords or places. The tool retrieves either the latest media tagged with a specified term or the media around a particular location and creates:
 		<ul>	
 			<li>a tabular file containing a list of media with lots of meta-information;</li>
 			<li>a tabular file with information on the users related to those media;</li>
@@ -48,7 +54,7 @@ $loginUrl = $instagram->getLoginUrl();
 		
 		<p>For more information on how to use this tool, check out this <a href="https://www.youtube.com/watch?v=o07aUKdRv0g" target="_blank">video</a>.</p>
 		
-		<p>Before using the tool, you may want to have a look at the FAQ section <a href="faq.php" target="_blank">here</a>.</p>
+		<p>Before using the tool, you may want to have a look at the <a href="faq.php" target="_blank">FAQ</a> or the <a href="privacy.php" target="_blank">privacy policy</a>.</p>
 		
 		<p>Launch the tool by <a href="<?php echo $loginUrl; ?>">connecting to Instagram</a>.<p>
 		
