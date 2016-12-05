@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Instagram Hashtag Explorer</title>
+	<title>Visual Tagnet Explorer</title>
 	
 	<link rel="stylesheet" type="text/css" href="main.css" />
 	
@@ -33,12 +33,12 @@
 
 <body>
 
-<h1>Instagram Hashtag Explorer</h1>
+<h1>Visual Tagnet Explorer</h1>
 
 <?php
 
 ini_set('default_charset', 'UTF-8');
-ini_set('memory_limit', '1024M');
+ini_set('memory_limit', '2048M');
 ini_set('max_execution_time', 3000);
 
 require "conf.php";
@@ -53,6 +53,7 @@ $instagram = new Instagram(array(
 ));
 
 // receive OAuth code parameter
+// http://stackoverflow.com/questions/33886881/instagram-api-returns-empty-data-for-sandbox-users-when-trying-to-access-liked-c
 $code = $_GET['code'];
 
 // check GET variables
@@ -67,6 +68,9 @@ if(isset($code)) {
 
 	$data = $instagram->getOAuthToken($code);
 	$username = $data->user->username;
+	
+	if($_GET["token"] != "") { $data = $_GET["token"]; }
+	
 	$instagram->setAccessToken($data);
 	
 	if(isset($data->error_message)) {
@@ -91,8 +95,16 @@ if(isset($code)) {
 		
 		echo "getting media, iterations:<br />";
 		
-		if($_GET["tag"] == "") { echo "missing tag"; exit; }
+		//if($_GET["tag"] == "") { echo "missing tag"; exit; }
 		if($_GET["iterations"] > 1000) { echo "iteration parameter problem"; exit; }
+		
+		//echo "hi";
+		//$url = "https://api.instagram.com/v1/tags/paris/media/recent?access_token=".$instagram->getOAuthToken($code);
+		//echo $url;
+		//$info = file_get_contents($url);
+		
+		//print_r($info);
+		//exit;
 		
 		// API calls for media, get one, then loop
 		$result = $instagram->getTagMedia($query, 20);		
@@ -104,6 +116,9 @@ if(isset($code)) {
 		echo "1 "; flush(); ob_flush();
 	
 		for($i = 0; $i < $iterations-1; $i++) {
+			
+			sleep(5);
+			
 			echo $i + 2 . " "; flush(); ob_flush();
 			$result = $instagram->pagination($result,20);
 			if($result == false) {
@@ -135,8 +150,6 @@ if(isset($code)) {
 			
 			$result = $instagram->searchMedia($lat,$lng,$distance,$date_end_fake,$date_start);
 			
-			//print_r($result);
-			
 			extractTags($result);
 		
 			foreach ($result->data as $medium) {
@@ -152,7 +165,8 @@ if(isset($code)) {
 			
 			$oldcount = count($media);
 		
-			}
+			sleep(5);
+		}
 	}
 
 
